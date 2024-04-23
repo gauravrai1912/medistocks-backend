@@ -1,9 +1,7 @@
 package com.medistocks.authentication.Service.Impl;
 
 import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Service;
-
 import com.medistocks.authentication.DTO.EmailDetails;
 import com.medistocks.authentication.DTO.OtpRequest;
 import com.medistocks.authentication.DTO.OtpResponse;
@@ -25,10 +23,9 @@ public class OtpService {
 
         private final OtpRepository otpRepository;
         private final EmailService emailService;
-
-        public Response sendOtp(OtpRequest otpRequest) {
-
-                Otp existingOtp = otpRepository.findByEmail(otpRequest.getEmail());
+        
+        public Response sendOtp(OtpRequest otpRequest, String useCase) {
+                Otp existingOtp = otpRepository.findByEmailAndUseCase(otpRequest.getEmail(), useCase);
                 if (existingOtp != null) {
                         otpRepository.delete(existingOtp);
                 }
@@ -37,18 +34,19 @@ public class OtpService {
                 otpRepository.save(Otp.builder()
                                 .email(otpRequest.getEmail())
                                 .Otp(otp)
-                                .expiresAt(LocalDateTime.now().plusMinutes(2))
+                                .expiresAt(LocalDateTime.now().plusMinutes(5))
+                                .useCase(useCase) // Set the use case
                                 .build());
                 emailService.sendEmail(EmailDetails.builder()
-                                .subject("Dont Share")
+                                .subject("Don't Share")
                                 .recipient(otpRequest.getEmail())
-                                .messageBody("this organisation has sent you otp. this otp expires in 2 minutes." + otp)
+                                .messageBody(" Medi stocks has sent you an OTP for " +useCase+ " " + "This OTP expires in 5 minutes. OTP: "
+                                                + otp)
                                 .build());
                 return Response.builder()
                                 .statusCode(200)
                                 .responseMessage("Success")
                                 .build();
-
         }
 
         public Response validateOtp(OtpValidationRequest otpValidationRequest) {

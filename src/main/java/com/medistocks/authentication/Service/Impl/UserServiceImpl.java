@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.medistocks.authentication.DTO.ChangePasswordRequest;
 import com.medistocks.authentication.DTO.LoginRequest;
 import com.medistocks.authentication.DTO.Request;
 import com.medistocks.authentication.DTO.Response;
@@ -87,7 +88,7 @@ public class UserServiceImpl implements UserService{
             // User not found, authentication failed
             return ResponseEntity.badRequest().body(Response.builder()
                     .statusCode(401)
-                    .responseMessage("Invalid email or password")
+                    .responseMessage("user not found")
                     .build());
         }
     }
@@ -108,8 +109,37 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Response changePassword() {
-        return null;
+    public Response changePassword(ChangePasswordRequest request) {
+        String email = request.getEmail();
+    String oldPassword = request.getPassword();
+    String newPassword = request.getNewPassword();
+
+    // Check if the user exists
+    Optional<User> optionalUser = userRepository.findByEmail(email);
+    if (optionalUser.isEmpty()) {
+        return Response.builder()
+            .statusCode(404)
+            .responseMessage("User not found")
+            .build();
+    }
+
+    // Validate if the old password matches
+    User user = optionalUser.get();
+    if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+        return Response.builder()
+            .statusCode(400)
+            .responseMessage("Invalid old password")
+            .build();
+    }
+
+    // Update the password
+    user.setPassword(passwordEncoder.encode(newPassword));
+    userRepository.save(user);
+
+    return Response.builder()
+        .statusCode(200)
+        .responseMessage("Password changed successfully")
+        .build();
     }
     
 }

@@ -25,6 +25,7 @@ public class Otp {
     private long Id;
     private String Otp;
     private String email;
+    private String useCase;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

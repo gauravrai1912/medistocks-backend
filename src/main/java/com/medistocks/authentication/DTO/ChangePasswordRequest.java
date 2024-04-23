@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChangePasswordRequest {
     private String email;
+    private String password;
     private String newPassword;
-    private String otp;
 }
