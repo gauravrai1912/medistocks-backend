@@ -27,6 +27,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/signup").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/forgotPassword").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/resetPassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/changePassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/otp/sendOtp").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/otp/validateOtp").permitAll()
