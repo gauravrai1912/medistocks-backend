@@ -13,6 +13,7 @@ public interface UserService {
     ResponseEntity<Response> login(LoginRequest request);
     Response sendOtp();
     Response validateOtp();
-    Response resetPassword();
+    public Response resetPasswordWithOTP(String email, String otp, String newPassword);
+    Response forgotPassword(String email);
     Response changePassword(ChangePasswordRequest request);
 }
