@@ -30,6 +30,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/forgotPassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/resetPassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/changePassword").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/products").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products").permitAll() 
+                        .requestMatchers(HttpMethod.GET, "/products/{id}").permitAll() 
+                        .requestMatchers(HttpMethod.PUT, "/products/{id}").permitAll() 
+                        .requestMatchers(HttpMethod.DELETE, "/products/{id}").permitAll() 
+                        .requestMatchers(HttpMethod.GET, "/suppliers").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/suppliers/{id}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/suppliers").permitAll() 
+                        .requestMatchers(HttpMethod.PUT, "/suppliers/{id}").permitAll() 
+                        .requestMatchers(HttpMethod.DELETE, "/suppliers/{id}").permitAll() 
                         .anyRequest().authenticated()
                 );
         return httpSecurity.build();
