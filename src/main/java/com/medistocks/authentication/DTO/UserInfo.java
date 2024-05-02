@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class UserInfo {
 
     private String email;
+    private long phoneNumber;
     private String firstName;
-    private String lastName;   
+    private String lastName;
+    private String pharmacyName;   
 }

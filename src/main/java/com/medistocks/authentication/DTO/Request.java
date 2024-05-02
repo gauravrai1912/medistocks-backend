@@ -12,8 +12,10 @@ import lombok.NoArgsConstructor;
 public class Request {
   
     private String email;
+    private long phoneNumber;
     private String password;
     private String firstName;
     private String lastName;
+    private String pharmacyName;
     
 }

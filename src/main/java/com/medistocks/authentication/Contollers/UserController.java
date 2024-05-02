@@ -1,10 +1,13 @@
 package com.medistocks.authentication.Contollers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,9 +17,13 @@ import com.medistocks.authentication.DTO.LoginRequest;
 import com.medistocks.authentication.DTO.Request;
 import com.medistocks.authentication.DTO.ResetPasswordRequest;
 import com.medistocks.authentication.DTO.Response;
+import com.medistocks.authentication.Entity.User;
+import com.medistocks.authentication.Repository.UserRepository;
 import com.medistocks.authentication.Service.UserService;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -25,6 +32,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("signup")
     public ResponseEntity<Response> signup(@RequestBody Request request) {
@@ -35,6 +45,13 @@ public class UserController {
     public ResponseEntity<Response> login(@RequestBody LoginRequest request) {
         return userService.login(request);
     }
+
+    @GetMapping("getuser")
+    public Optional<User> getuser(@RequestHeader long Id ) {
+        Optional<User> userdetails=userRepository.findById(Id);
+        return userdetails;
+    }
+    
 
     @PostMapping("changePassword")
     public ResponseEntity<Response> changePassword(@RequestBody ChangePasswordRequest request) {

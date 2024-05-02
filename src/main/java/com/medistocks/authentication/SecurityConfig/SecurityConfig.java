@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/forgotPassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/resetPassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/changePassword").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/getuser").permitAll()
                         .anyRequest().authenticated()
                 );
         return httpSecurity.build();
