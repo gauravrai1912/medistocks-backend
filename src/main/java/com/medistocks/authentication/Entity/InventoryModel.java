@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -21,10 +22,10 @@ public class InventoryModel {
     private int productId;
     private int supplierId;
     private String batchNumber;
-    private Date purchaseDate;
+    private LocalDate purchaseDate;
     private Date manufacturedDate;
     private BigDecimal purchasePrice;
     private int quantity;
-    private Date expirationDate;
+    private LocalDate expirationDate;
   
 }

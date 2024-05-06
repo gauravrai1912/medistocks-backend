@@ -35,7 +35,7 @@ public class OrderService {
 
     @Transactional
     public void deleteOrder(int id) {
-        orderDetailsRepository.deleteById(id);
+        orderDetailsRepository.deleteByOrderId(id);
         orderRepository.deleteById(id);
     }
 

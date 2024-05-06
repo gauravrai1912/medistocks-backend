@@ -16,7 +16,7 @@ public class OrderDetailsService {
     private OrderDetailsRepository orderDetailsRepository;
 
     public List<OrderDetailsModel> getAllOrderDetails() {
-        return orderDetailsRepository.findAll();
+        return (List<OrderDetailsModel>) orderDetailsRepository.findAll();
     }
 
     public OrderDetailsModel saveOrderDetails(OrderDetailsModel orderDetails) {

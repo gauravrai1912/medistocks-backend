@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.medistocks.authentication.Entity.InventoryModel;
+
 import com.medistocks.authentication.Repository.InventoryRepository;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class InventoryService {
 
     public InventoryModel getInventoryById(int inventoryId) {
         return inventoryRepository.findById(inventoryId).orElse(null);
+    }
+    public InventoryModel saveInventory(InventoryModel inventory) {
+        return inventoryRepository.save(inventory);
     }
 
     public InventoryModel createInventory(InventoryModel inventory) {
