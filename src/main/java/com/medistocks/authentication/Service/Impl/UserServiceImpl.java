@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
 
     private Map<String, String> otpStorage = new HashMap<>();
 
-    @Override
     public ResponseEntity<Response> signUp(Request request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
