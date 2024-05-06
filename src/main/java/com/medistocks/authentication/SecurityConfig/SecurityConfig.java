@@ -30,8 +30,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/forgotPassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/resetPassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/changePassword").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/getuser").permitAll()
-
 
                         .requestMatchers(HttpMethod.POST, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products").permitAll() 
@@ -59,6 +57,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/order-details/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/order-details").permitAll() 
                         .requestMatchers(HttpMethod.PUT, "/order-details/{id}").permitAll() 
+
                         .requestMatchers(HttpMethod.DELETE, "/order-details/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/getuser").permitAll()
                         .anyRequest().authenticated());
