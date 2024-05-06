@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .env
+C:\Users\Gaurav_rai\Desktop\medistocks\New folder\medistocks-backend\src\main\java\com\medistocks\authentication\SecurityConfig\SecurityConfig.java
 ### STS ###
 .apt_generated
 .classpath
