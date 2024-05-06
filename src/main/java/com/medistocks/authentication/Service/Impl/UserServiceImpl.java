@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
 
     private Map<String, String> otpStorage = new HashMap<>();
 
-    @Override
     public ResponseEntity<Response> signUp(Request request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -58,6 +57,8 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
+                .pharmacyName(request.getPharmacyName())
+                .phoneNumber(request.getPhoneNumber())
                 .build();
         User saveUser = userRepository.save(user);
 
@@ -102,16 +103,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response sendOtp() {
-        return null;
-    }
-
-    @Override
-    public Response validateOtp() {
-        return null;
-    }
-
-    @Override
     public Response forgotPassword(String email) {
         // Check if the user exists
         Optional<User> optionalUser = userRepository.findByEmail(email);
@@ -129,8 +120,8 @@ public class UserServiceImpl implements UserService {
         otpStorage.put(email, otp);
 
         // Prepare email details
-        String subject = "Password Reset OTP";
-        String messageBody = "Your OTP for password reset is: " + otp;
+        String subject = "Your OTP for password reset is: " + otp;
+        String messageBody = "Password Reset OTP";
         EmailDetails emailDetails = new EmailDetails(email, subject, messageBody);
 
         // Send OTP to the user

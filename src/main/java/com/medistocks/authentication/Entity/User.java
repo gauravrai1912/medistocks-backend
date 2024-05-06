@@ -1,14 +1,11 @@
 package com.medistocks.authentication.Entity;
 
-import java.time.LocalDateTime;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,16 +22,23 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
+    
+    @NotNull
     private String email;
+    
+    @NotNull
+    private long phoneNumber;
+    
+    @NotNull
     private String password;
+
+    @NotNull
     private String firstName;
+
+    @NotNull
     private String lastName;
 
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime modifiedAt;
+    @NotNull
+    private String pharmacyName;
 
 }

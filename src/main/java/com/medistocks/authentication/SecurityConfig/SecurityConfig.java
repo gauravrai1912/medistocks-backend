@@ -15,9 +15,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig {
-    
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/forgotPassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/resetPassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/changePassword").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products").permitAll() 
                         .requestMatchers(HttpMethod.GET, "/products/{id}").permitAll() 
@@ -56,9 +57,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/order-details/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/order-details").permitAll() 
                         .requestMatchers(HttpMethod.PUT, "/order-details/{id}").permitAll() 
-                        .requestMatchers(HttpMethod.DELETE, "/order-details/{id}").permitAll() 
-                        .anyRequest().authenticated()
-                );
+
+                        .requestMatchers(HttpMethod.DELETE, "/order-details/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/getuser").permitAll()
+                        .anyRequest().authenticated());
         return httpSecurity.build();
     }
 }
