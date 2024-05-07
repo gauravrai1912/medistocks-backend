@@ -1,14 +1,16 @@
 package com.medistocks.authentication.Contollers;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.medistocks.authentication.DTO.ChangePasswordRequest;
@@ -17,8 +19,8 @@ import com.medistocks.authentication.DTO.LoginRequest;
 import com.medistocks.authentication.DTO.Request;
 import com.medistocks.authentication.DTO.ResetPasswordRequest;
 import com.medistocks.authentication.DTO.Response;
+import com.medistocks.authentication.DTO.UserInfo;
 import com.medistocks.authentication.Entity.User;
-import com.medistocks.authentication.Repository.UserRepository;
 import com.medistocks.authentication.Service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -32,23 +34,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @PostMapping("signup")
     public ResponseEntity<Response> signup(@RequestBody Request request) {
         return userService.signUp(request);
     }
 
+    @PutMapping("updateUser")
+    public ResponseEntity<Response> updateUser(@RequestHeader String email, String token,
+            @RequestBody UserInfo userInfo) {
+        return userService.updateUser(email, token, userInfo);
+    }
+
     @PostMapping("login")
     public ResponseEntity<Response> login(@RequestBody LoginRequest request) {
         return userService.login(request);
-    }
-
-    @GetMapping("getuser")
-    public Optional<User> getuser(@RequestParam long Id) {
-        Optional<User> userdetails = userRepository.findById(Id);
-        return userdetails;
     }
 
     @PostMapping("changePassword")
@@ -78,6 +77,17 @@ public class UserController {
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(response);
+    }
+
+    @GetMapping("getallusers")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("getUser")
+    public ResponseEntity<Response> getUserById(@RequestHeader UUID userId) {
+        return userService.getUserById(userId);
     }
 
 }

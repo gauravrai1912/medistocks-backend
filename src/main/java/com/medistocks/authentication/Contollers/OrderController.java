@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.medistocks.authentication.Entity.OrderModel;
-import com.medistocks.authentication.Service.OrderService;
+import com.medistocks.authentication.Service.Impl.OrderService;
 
 import java.util.List;
 

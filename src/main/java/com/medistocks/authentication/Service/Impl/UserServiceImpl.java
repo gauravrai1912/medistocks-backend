@@ -1,8 +1,10 @@
 package com.medistocks.authentication.Service.Impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +69,32 @@ public class UserServiceImpl implements UserService {
                 .responseMessage("Success")
                 .userInfo(modelMapper.map(saveUser, UserInfo.class))
                 .build());
+    }
+
+
+    public ResponseEntity<Response> updateUser(String userEmail,String token,UserInfo userInfo) {
+        Optional<User> optionalUser = userRepository.findByEmail(userEmail);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            // Update user information
+            user.setFirstName(userInfo.getFirstName());
+            user.setLastName(userInfo.getLastName());
+            user.setPharmacyName(userInfo.getPharmacyName());
+            user.setPhoneNumber(userInfo.getPhoneNumber());
+    
+            // Save the updated user
+            User savedUser = userRepository.save(user);
+    
+            // Return success response with updated user info
+            return ResponseEntity.ok(Response.builder()
+                    .statusCode(200)
+                    .responseMessage("User information updated successfully")
+                    .userInfo(modelMapper.map(savedUser, UserInfo.class))
+                    .build());
+        } else {
+            // Return error response if user not found
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Override
@@ -197,4 +225,45 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public ResponseEntity<Response> getUserById(UUID userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            // Map the user to UserInfo
+            UserInfo userInfo = modelMapper.map(optionalUser.get(), UserInfo.class);
+            // Return success response with user info
+            return ResponseEntity.ok(Response.builder()
+                    .statusCode(200)
+                    .responseMessage("User found")
+                    .userInfo(userInfo)
+                    .build());
+        } else {
+            // Return error response if user not found
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public void deleteUser(UUID userId) {
+        userRepository.deleteById(userId);
+    }
+    
+    
+    public User updateUser(UUID userId, UserInfo user) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        existingUser.setEmail(user.getEmail());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setPhoneNumber(user.getPhoneNumber());
+        existingUser.setPharmacyName(user.getPharmacyName());
+
+        return userRepository.save(existingUser);
+    }
+
+
+ 
 }

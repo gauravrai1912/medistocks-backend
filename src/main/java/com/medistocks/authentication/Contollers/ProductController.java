@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.medistocks.authentication.Entity.ProductModel;
-import com.medistocks.authentication.Service.ProductService;
+import com.medistocks.authentication.Service.Impl.ProductService;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.medistocks.authentication.Entity.SupplierModel;
-import com.medistocks.authentication.Service.SupplierService;
+import com.medistocks.authentication.Service.Impl.SupplierService;
 
 import java.util.List;
 
