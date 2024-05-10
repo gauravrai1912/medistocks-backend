@@ -1,6 +1,6 @@
 package com.medistocks.authentication.Contollers;
 
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ import com.medistocks.authentication.DTO.Request;
 import com.medistocks.authentication.DTO.ResetPasswordRequest;
 import com.medistocks.authentication.DTO.Response;
 import com.medistocks.authentication.DTO.UserInfo;
-import com.medistocks.authentication.Entity.User;
 import com.medistocks.authentication.Service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -57,6 +56,32 @@ public class UserController {
         return ResponseEntity.status(status).body(response);
     }
 
+    // @PostMapping("forgotPassword")
+    // public ResponseEntity<Response> forgotPassword(@RequestBody
+    // ForgotPasswordRequest request) {
+    // Response response = userService.forgotPassword(request.getEmail());
+    // HttpStatus status = response.getStatusCode() == 200 ? HttpStatus.OK :
+    // HttpStatus.NOT_FOUND;
+    // return ResponseEntity.status(status).body(response);
+    // }
+
+    // @PostMapping("resetPassword")
+    // public ResponseEntity<Response> resetPasswordWithOTP(@RequestBody
+    // ResetPasswordRequest request) {
+    // Response response = userService.resetPasswordWithOTP(request.getEmail(),
+    // request.getOtp(),
+    // request.getNewPassword());
+    // HttpStatus status;
+    // if (response.getStatusCode() == 200) {
+    // status = HttpStatus.OK;
+    // } else if (response.getStatusCode() == 404) {
+    // status = HttpStatus.NOT_FOUND;
+    // } else {
+    // status = HttpStatus.BAD_REQUEST;
+    // }
+    // return ResponseEntity.status(status).body(response);
+    // }
+
     @PostMapping("forgotPassword")
     public ResponseEntity<Response> forgotPassword(@RequestBody ForgotPasswordRequest request) {
         Response response = userService.forgotPassword(request.getEmail());
@@ -65,8 +90,8 @@ public class UserController {
     }
 
     @PostMapping("resetPassword")
-    public ResponseEntity<Response> resetPasswordWithOTP(@RequestBody ResetPasswordRequest request) {
-        Response response = userService.resetPasswordWithOTP(request.getEmail(), request.getOtp(),
+    public ResponseEntity<Response> resetPasswordWithOtp(@RequestBody ResetPasswordRequest request) {
+        Response response = userService.resetPasswordWithOtp(request.getEmail(), request.getOtp(),
                 request.getNewPassword());
         HttpStatus status;
         if (response.getStatusCode() == 200) {
@@ -79,15 +104,20 @@ public class UserController {
         return ResponseEntity.status(status).body(response);
     }
 
-    @GetMapping("getallusers")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
 
     @GetMapping("getUser")
     public ResponseEntity<Response> getUserById(@RequestHeader UUID userId) {
-        return userService.getUserById(userId);
+        try {
+            ResponseEntity<Response> response = userService.getUserById(userId);
+            return response;
+        } catch (NoSuchElementException e) {
+            // If the user is not found, return a custom "User not found" response
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Response.builder()
+                            .statusCode(HttpStatus.NOT_FOUND.value())
+                            .responseMessage("User not found")
+                            .build());
+        }
     }
 
 }
