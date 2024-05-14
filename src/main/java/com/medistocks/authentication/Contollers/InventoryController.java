@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.medistocks.authentication.Entity.InventoryModel;
-import com.medistocks.authentication.Service.InventoryNotificationService;
-import com.medistocks.authentication.Service.InventoryService;
+import com.medistocks.authentication.Service.Impl.InventoryNotificationService;
+import com.medistocks.authentication.Service.Impl.InventoryService;
 
 import java.util.List;
 

@@ -2,8 +2,6 @@ package com.medistocks.authentication.Entity;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,12 +21,7 @@ public class Otp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
-    private String Otp;
     private String email;
-    private String useCase;
-
-    @CreationTimestamp
+    private String otp;
     private LocalDateTime createdAt;
-
-    private LocalDateTime expiresAt;
 }

@@ -1,4 +1,4 @@
-package com.medistocks.authentication.Service;
+package com.medistocks.authentication.Service.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -9,7 +9,6 @@ import com.medistocks.authentication.Entity.InventoryModel;
 import com.medistocks.authentication.Entity.ProductModel;
 import com.medistocks.authentication.Repository.InventoryRepository;
 import com.medistocks.authentication.Repository.ProductRepository;
-import com.medistocks.authentication.Service.Impl.EmailService;
 
 import java.time.LocalDate;
 import java.util.List;

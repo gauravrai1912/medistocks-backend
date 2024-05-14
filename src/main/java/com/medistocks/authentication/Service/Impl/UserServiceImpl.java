@@ -1,8 +1,7 @@
 package com.medistocks.authentication.Service.Impl;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,10 @@ import com.medistocks.authentication.DTO.LoginRequest;
 import com.medistocks.authentication.DTO.Request;
 import com.medistocks.authentication.DTO.Response;
 import com.medistocks.authentication.DTO.UserInfo;
+import com.medistocks.authentication.Entity.Otp;
 import com.medistocks.authentication.Entity.User;
 import com.medistocks.authentication.Repository.UserRepository;
+import com.medistocks.authentication.Service.OtpService;
 import com.medistocks.authentication.Service.UserService;
 import com.medistocks.authentication.Utils.AppUtils;
 
@@ -42,14 +43,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TokenService tokenService;
 
-    private Map<String, String> otpStorage = new HashMap<>();
+    @Autowired
+    private OtpService otpService;
+
+    
+
+    // private Map<String, String> otpStorage = new HashMap<>();
 
     public ResponseEntity<Response> signUp(Request request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body(Response.builder()
                     .statusCode(400)
-                    .responseMessage("duplicate user")
+                    .responseMessage("user with this email id already exits!")
                     .build());
         }
         User user = User.builder()
@@ -67,6 +73,31 @@ public class UserServiceImpl implements UserService {
                 .responseMessage("Success")
                 .userInfo(modelMapper.map(saveUser, UserInfo.class))
                 .build());
+    }
+
+    public ResponseEntity<Response> updateUser(String userEmail, String token, UserInfo userInfo) {
+        Optional<User> optionalUser = userRepository.findByEmail(userEmail);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            // Update user information
+            user.setFirstName(userInfo.getFirstName());
+            user.setLastName(userInfo.getLastName());
+            user.setPharmacyName(userInfo.getPharmacyName());
+            user.setPhoneNumber(userInfo.getPhoneNumber());
+
+            // Save the updated user
+            User savedUser = userRepository.save(user);
+
+            // Return success response with updated user info
+            return ResponseEntity.ok(Response.builder()
+                    .statusCode(200)
+                    .responseMessage("User information updated successfully")
+                    .userInfo(modelMapper.map(savedUser, UserInfo.class))
+                    .build());
+        } else {
+            // Return error response if user not found
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Override
@@ -102,9 +133,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+  
+
     @Override
     public Response forgotPassword(String email) {
-        // Check if the user exists
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty()) {
             return Response.builder()
@@ -113,18 +145,13 @@ public class UserServiceImpl implements UserService {
                     .build();
         }
 
-        // Generate OTP
         String otp = AppUtils.generateOtp();
+        otpService.saveOrUpdateOtp(email, otp);
 
-        // Store the OTP for verification
-        otpStorage.put(email, otp);
-
-        // Prepare email details
         String subject = "Your OTP for password reset is: " + otp;
         String messageBody = "Password Reset OTP";
         EmailDetails emailDetails = new EmailDetails(email, subject, messageBody);
 
-        // Send OTP to the user
         emailService.sendEmail(emailDetails);
 
         return Response.builder()
@@ -133,24 +160,22 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    public Response resetPasswordWithOTP(String email, String otp, String newPassword) {
-        // Check if the OTP matches
-        String storedOTP = otpStorage.get(email);
-        if (storedOTP == null || !storedOTP.equals(otp)) {
+    @Override
+    public Response resetPasswordWithOtp(String email, String otp, String newPassword) {
+        Optional<Otp> optionalOtp = otpService.findOtpByEmail(email);
+        if (optionalOtp.isEmpty() || !optionalOtp.get().getOtp().equals(otp)) {
             return Response.builder()
                     .statusCode(400)
                     .responseMessage("Invalid OTP")
                     .build();
         }
 
-        // Update the password
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
-            // Clear the OTP from storage
-            otpStorage.remove(email);
+            otpService.deleteOtp(email);
             return Response.builder()
                     .statusCode(200)
                     .responseMessage("Password changed successfully")
@@ -195,6 +220,40 @@ public class UserServiceImpl implements UserService {
                 .statusCode(200)
                 .responseMessage("Password changed successfully")
                 .build();
+    }
+
+    public ResponseEntity<Response> getUserById(UUID userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            // Map the user to UserInfo
+            UserInfo userInfo = modelMapper.map(optionalUser.get(), UserInfo.class);
+            // Return success response with user info
+            return ResponseEntity.ok(Response.builder()
+                    .statusCode(200)
+                    .responseMessage("User found")
+                    .userInfo(userInfo)
+                    .build());
+        } else {
+            // Return error response if user not found
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public void deleteUser(UUID userId) {
+        userRepository.deleteById(userId);
+    }
+
+    public User updateUser(UUID userId, UserInfo user) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        existingUser.setEmail(user.getEmail());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setPhoneNumber(user.getPhoneNumber());
+        existingUser.setPharmacyName(user.getPharmacyName());
+
+        return userRepository.save(existingUser);
     }
 
 }
