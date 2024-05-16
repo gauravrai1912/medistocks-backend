@@ -22,4 +22,5 @@ public interface UserService {
     ResponseEntity<Response> updateUser(String userEmail,String token, UserInfo userInfo);
     Response resetPasswordWithOtp(String email, String otp, String newPassword);
     Response forgotPassword(String email);
+    void updatePasswordByEmail(String email, String newPassword);
 }

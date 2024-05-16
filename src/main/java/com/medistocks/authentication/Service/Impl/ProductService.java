@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.medistocks.authentication.Entity.ProductModel;
 import com.medistocks.authentication.Repository.ProductRepository;
 
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,24 +22,24 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Optional<ProductModel> getProductById(int id) {
-        return productRepository.findById(id);
+    public Optional<ProductModel> getProductByName(String name) {
+        return productRepository.findByProductName(name);
     }
 
     public ProductModel saveProduct(ProductModel product) {
         return productRepository.save(product);
     }
-
-    public void deleteProduct(int id) {
-        productRepository.deleteById(id);
+    @Transactional
+    public void deleteProduct(String name) {
+        productRepository.deleteByProductName(name);
     }
 
-    public ProductModel updateProduct(int id, ProductModel product) {
-        ProductModel existingProduct = productRepository.findById(id)
+    public ProductModel updateProduct(String name, ProductModel product) {
+        ProductModel existingProduct = productRepository.findByProductName(name)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         existingProduct.setProductName(product.getProductName());
-        existingProduct.setSupplierId(product.getSupplierId());
+        existingProduct.setSupplierName(product.getSupplierName());
         existingProduct.setDescription(product.getDescription());
         existingProduct.setCategory(product.getCategory());
         existingProduct.setUnitPrice(product.getUnitPrice());

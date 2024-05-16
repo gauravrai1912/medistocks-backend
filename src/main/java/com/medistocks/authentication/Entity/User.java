@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class User {
 
-  @Id
+    @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.medistocks.authentication.Entity.SupplierModel;
 import com.medistocks.authentication.Repository.SupplierRepository;
 
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,20 +22,21 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
-    public Optional<SupplierModel> getSupplierById(int id) {
-        return supplierRepository.findById(id);
+    public Optional<SupplierModel> getSupplierByName(String name) {
+        return supplierRepository.findBySupplierName(name);
     }
 
     public SupplierModel saveSupplier(SupplierModel supplier) {
         return supplierRepository.save(supplier);
     }
 
-    public void deleteSupplier(int id) {
-        supplierRepository.deleteById(id);
+    @Transactional
+    public void deleteSupplier(String name) {
+        supplierRepository.deleteBySupplierName(name);
     }
 
-    public SupplierModel updateSupplier(int id, SupplierModel supplier) {
-        SupplierModel existingSupplier = supplierRepository.findById(id)
+    public SupplierModel updateSupplier(String name, SupplierModel supplier) {
+        SupplierModel existingSupplier = supplierRepository.findBySupplierName(name)
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
         existingSupplier.setSupplierName(supplier.getSupplierName());

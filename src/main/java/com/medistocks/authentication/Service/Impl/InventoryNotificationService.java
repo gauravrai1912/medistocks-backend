@@ -29,7 +29,7 @@ public class InventoryNotificationService {
     public void checkInventoryAndSendNotifications() {
         List<InventoryModel> inventories = inventoryRepository.findAll();
         for (InventoryModel inventory : inventories) {
-            ProductModel product = productRepository.findById(inventory.getProductId()).orElse(null);
+            ProductModel product = productRepository.findByProductName(inventory.getProductName()).orElse(null);
             if (product != null && inventory.getQuantity() < product.getReorderLevel()) {
                 sendNotification(product, inventory);
             }
@@ -56,7 +56,7 @@ public class InventoryNotificationService {
     
 
     private void sendExpiryNotification(InventoryModel inventory) {
-        ProductModel product = productRepository.findById(inventory.getProductId()).orElse(null);
+        ProductModel product = productRepository.findByProductName(inventory.getProductName()).orElse(null);
         System.out.println(product);
         if (product != null) {
             String message = "Product " + product.getProductName() + " is expiring soon. Expiry Date: " + inventory.getExpirationDate();

@@ -17,7 +17,9 @@ public class ProductModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
-    private int supplierId;
+    private String supplierName;
+
+ 
     private String productName;
     private String description;
     private String category;
