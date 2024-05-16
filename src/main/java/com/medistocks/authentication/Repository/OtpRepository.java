@@ -1,6 +1,7 @@
 package com.medistocks.authentication.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,6 @@ public interface OtpRepository extends JpaRepository<Otp, Long> {
 
     @Transactional
     void deleteByEmail(String email);
+
+    List<Otp> findByCreatedAt(LocalDateTime createdAt);
 }
