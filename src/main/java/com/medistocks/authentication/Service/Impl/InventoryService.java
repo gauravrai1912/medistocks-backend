@@ -33,7 +33,7 @@ public class InventoryService {
     public InventoryModel updateInventory(int inventoryId, InventoryModel updatedInventory) {
         InventoryModel existingInventory = inventoryRepository.findById(inventoryId).orElse(null);
         if (existingInventory != null) {
-            existingInventory.setProductId(updatedInventory.getProductId());
+            existingInventory.setProductName(updatedInventory.getProductName());
             existingInventory.setSupplierId(updatedInventory.getSupplierId());
             existingInventory.setBatchNumber(updatedInventory.getBatchNumber());
             existingInventory.setPurchaseDate(updatedInventory.getPurchaseDate());

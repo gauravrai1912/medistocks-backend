@@ -19,7 +19,7 @@ public class InventoryModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int inventoryId;
-    private int productId;
+    private String productName;
     private int supplierId;
     private String batchNumber;
     private LocalDate purchaseDate;

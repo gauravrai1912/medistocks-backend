@@ -79,7 +79,6 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.findByEmail(userEmail);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            // Update user information
             user.setFirstName(userInfo.getFirstName());
             user.setLastName(userInfo.getLastName());
             user.setPharmacyName(userInfo.getPharmacyName());
@@ -255,5 +254,19 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(existingUser);
     }
+
+    @Override
+    public void updatePasswordByEmail(String email, String newPassword) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        } else {
+            // Handle user not found scenario
+            throw new RuntimeException("User with email " + email + " not found.");
+        }
+    }
+    
 
 }

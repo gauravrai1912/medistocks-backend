@@ -12,20 +12,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/suppliers")
+@CrossOrigin("*")
 public class SupplierController {
 
     @Autowired
     private SupplierService supplierService;
 
-    @GetMapping
+    @GetMapping("/getallsuppliers")
     public ResponseEntity<List<SupplierModel>> getAllSuppliers() {
         List<SupplierModel> suppliers = supplierService.getAllSuppliers();
         return ResponseEntity.ok(suppliers);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SupplierModel> getSupplierById(@PathVariable int id) {
-        SupplierModel supplier = supplierService.getSupplierById(id)
+    @GetMapping("/getsupplierbyname")
+    public ResponseEntity<SupplierModel> getSupplierByName(@RequestParam String name) {
+        SupplierModel supplier = supplierService.getSupplierByName(name)
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
         return ResponseEntity.ok(supplier);
     }
@@ -36,15 +37,15 @@ public class SupplierController {
         return ResponseEntity.ok(newSupplier);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<SupplierModel> updateSupplier(@PathVariable int id, @RequestBody SupplierModel supplier) {
-        SupplierModel updatedSupplier = supplierService.updateSupplier(id, supplier);
+    @PutMapping("/updatesupplier")
+    public ResponseEntity<SupplierModel> updateSupplier(@RequestParam String name, @RequestBody SupplierModel supplier) {
+        SupplierModel updatedSupplier = supplierService.updateSupplier(name, supplier);
         return ResponseEntity.ok(updatedSupplier);
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteSupplier(@PathVariable int id) {
-        supplierService.deleteSupplier(id);
+    @DeleteMapping("/deletesupplier")
+    public String deleteSupplier(@RequestParam String name) {
+        supplierService.deleteSupplier(name);
         return "Supplier details Deleted";
     }
 }
