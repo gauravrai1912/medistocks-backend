@@ -26,6 +26,9 @@ public class User {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
+
+    @NotNull
+    private int employeeId;
     
     @NotNull
     private String email;

@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Request {
-
+    
+    private int employeeId;
     private String email;
     private long phoneNumber;
     private String password;

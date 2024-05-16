@@ -14,6 +14,7 @@ import com.medistocks.authentication.DTO.EmailDetails;
 import com.medistocks.authentication.DTO.LoginRequest;
 import com.medistocks.authentication.DTO.Request;
 import com.medistocks.authentication.DTO.Response;
+import com.medistocks.authentication.DTO.UpdateUser;
 import com.medistocks.authentication.DTO.UserInfo;
 import com.medistocks.authentication.Entity.Otp;
 import com.medistocks.authentication.Entity.User;
@@ -46,19 +47,28 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private OtpService otpService;
 
-    
-
     // private Map<String, String> otpStorage = new HashMap<>();
 
     public ResponseEntity<Response> signUp(Request request) {
 
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        Optional<User> existingUserByEmail = userRepository.findByEmail(request.getEmail());
+        if (existingUserByEmail.isPresent()) {
             return ResponseEntity.badRequest().body(Response.builder()
                     .statusCode(400)
-                    .responseMessage("user with this email id already exits!")
+                    .responseMessage("User with this email already exists!")
                     .build());
         }
+
+        Optional<User> existingUserByEmployeeId = userRepository.findByEmployeeId(request.getEmployeeId());
+        if (existingUserByEmployeeId.isPresent()) {
+            return ResponseEntity.badRequest().body(Response.builder()
+                    .statusCode(400)
+                    .responseMessage("User with this employee ID already exists! Please choose a different one.")
+                    .build());
+        }
+
         User user = User.builder()
+                .employeeId(request.getEmployeeId())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .firstName(request.getFirstName())
@@ -75,18 +85,20 @@ public class UserServiceImpl implements UserService {
                 .build());
     }
 
-    public ResponseEntity<Response> updateUser(String userEmail, String token, UserInfo userInfo) {
+    public ResponseEntity<Response> updateUser(String userEmail, String token, UpdateUser updateUser) {
         Optional<User> optionalUser = userRepository.findByEmail(userEmail);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            user.setFirstName(userInfo.getFirstName());
-            user.setLastName(userInfo.getLastName());
-            user.setPharmacyName(userInfo.getPharmacyName());
-            user.setPhoneNumber(userInfo.getPhoneNumber());
-
+    
+            
+            user.setFirstName(updateUser.getFirstName());
+            user.setLastName(updateUser.getLastName());
+            user.setPharmacyName(updateUser.getPharmacyName());
+            user.setPhoneNumber(updateUser.getPhoneNumber());
+    
             // Save the updated user
             User savedUser = userRepository.save(user);
-
+    
             // Return success response with updated user info
             return ResponseEntity.ok(Response.builder()
                     .statusCode(200)
@@ -98,6 +110,7 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.notFound().build();
         }
     }
+    
 
     @Override
     public ResponseEntity<Response> login(LoginRequest request) {
@@ -131,8 +144,6 @@ public class UserServiceImpl implements UserService {
                     .build());
         }
     }
-
-  
 
     @Override
     public Response forgotPassword(String email) {
@@ -267,6 +278,5 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User with email " + email + " not found.");
         }
     }
-    
 
 }

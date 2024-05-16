@@ -9,7 +9,7 @@ import com.medistocks.authentication.DTO.ChangePasswordRequest;
 import com.medistocks.authentication.DTO.LoginRequest;
 import com.medistocks.authentication.DTO.Request;
 import com.medistocks.authentication.DTO.Response;
-import com.medistocks.authentication.DTO.UserInfo;
+import com.medistocks.authentication.DTO.UpdateUser;
 
 @Component
 public interface UserService {
@@ -19,7 +19,7 @@ public interface UserService {
     Response changePassword(ChangePasswordRequest request);
     ResponseEntity<Response> getUserById(UUID userId);
     void deleteUser(UUID userId);
-    ResponseEntity<Response> updateUser(String userEmail,String token, UserInfo userInfo);
+    ResponseEntity<Response> updateUser(String userEmail,String token, UpdateUser updateUser);
     Response resetPasswordWithOtp(String email, String otp, String newPassword);
     Response forgotPassword(String email);
     void updatePasswordByEmail(String email, String newPassword);

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.medistocks.authentication.DTO.ChangePasswordRequest;
@@ -23,7 +22,7 @@ import com.medistocks.authentication.DTO.OtpValidationRequest;
 import com.medistocks.authentication.DTO.Request;
 import com.medistocks.authentication.DTO.ResetPasswordRequest;
 import com.medistocks.authentication.DTO.Response;
-import com.medistocks.authentication.DTO.UserInfo;
+import com.medistocks.authentication.DTO.UpdateUser;
 import com.medistocks.authentication.Entity.Otp;
 import com.medistocks.authentication.Repository.OtpRepository;
 import com.medistocks.authentication.Service.UserService;
@@ -32,7 +31,6 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -54,8 +52,8 @@ public class UserController {
 
     @PutMapping("updateUser")
     public ResponseEntity<Response> updateUser(@RequestHeader String email, String token,
-            @RequestBody UserInfo userInfo) {
-        return userService.updateUser(email, token, userInfo);
+            @RequestBody UpdateUser updateUser) {
+        return userService.updateUser(email, token, updateUser);
     }
 
     @PostMapping("login")

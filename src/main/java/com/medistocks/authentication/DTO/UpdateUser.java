@@ -1,6 +1,6 @@
 package com.medistocks.authentication.DTO;
 
-import java.util.UUID;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,12 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserInfo {
-    private UUID userId;
-    private int employeeId;
-    private String email;
+public class UpdateUser {
+
     private long phoneNumber;
     private String firstName;
     private String lastName;
-    private String pharmacyName;   
+    private String pharmacyName;
 }
