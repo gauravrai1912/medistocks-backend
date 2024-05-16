@@ -1,10 +1,10 @@
  package com.medistocks.authentication.Service.Impl;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.medistocks.authentication.Entity.Otp;
@@ -41,9 +41,9 @@ public class OtpServiceImpl implements OtpService {
         otpRepository.deleteByEmail(email);
     }
 
-    @Override
+    @Scheduled(fixedRate = 60000) // Scheduled to run every 3 minutes (180,000 milliseconds)
     public void deleteUnusedOtps() {
-        LocalDateTime fiveMinutesAgo = LocalDateTime.now().minus(5, ChronoUnit.MINUTES);
-        otpRepository.deleteByCreatedAtBefore(fiveMinutesAgo);
+        LocalDateTime threeMinutesAgo = LocalDateTime.now().minusMinutes(5);
+        otpRepository.deleteByCreatedAtBefore(threeMinutesAgo);
     }
 }

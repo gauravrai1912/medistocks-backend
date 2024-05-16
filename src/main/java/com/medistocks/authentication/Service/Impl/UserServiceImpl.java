@@ -89,15 +89,14 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.findByEmail(userEmail);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-    
-            
+
             user.setFirstName(updateUser.getFirstName());
             user.setLastName(updateUser.getLastName());
             user.setPhoneNumber(updateUser.getPhoneNumber());
-    
+
             // Save the updated user
             User savedUser = userRepository.save(user);
-    
+
             // Return success response with updated user info
             return ResponseEntity.ok(Response.builder()
                     .statusCode(200)
@@ -109,7 +108,6 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.notFound().build();
         }
     }
-    
 
     @Override
     public ResponseEntity<Response> login(LoginRequest request) {
