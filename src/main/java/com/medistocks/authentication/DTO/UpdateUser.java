@@ -16,5 +16,5 @@ public class UpdateUser {
     private long phoneNumber;
     private String firstName;
     private String lastName;
-    private String pharmacyName;
+    
 }

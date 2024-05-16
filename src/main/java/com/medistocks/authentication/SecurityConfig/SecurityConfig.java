@@ -32,7 +32,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/changePassword").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/getallusers").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/v1/auth/updateUser").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/getUser/**" ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/getUser/*" ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/getuserinfo").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/auth/updateProfile").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products").permitAll() 

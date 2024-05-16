@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.medistocks.authentication.DTO.ChangePasswordRequest;
@@ -49,6 +50,27 @@ public class UserController {
     public ResponseEntity<Response> signup(@RequestBody Request request) {
         return userService.signUp(request);
     }
+
+    @GetMapping("/getuserinfo")
+    public ResponseEntity<UpdateUser> getUserInfo(@RequestHeader String email, String token) {
+        // Get the user information
+        UpdateUser updateUser = userService.getUserInfo(email, token);
+
+        // Return the user information in a ResponseEntity
+        return ResponseEntity.ok(updateUser);
+    }
+
+     @PutMapping("/updateProfile")
+    public ResponseEntity<String> updateUserProfile(@RequestParam String email, @RequestBody UpdateUser updateUserRequest) {
+        try {
+            // Assuming UserService has a method to update user profile
+            userService.updateUserProfile(email, updateUserRequest);
+            return new ResponseEntity<>("User profile updated successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to update user profile", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @PutMapping("updateUser")
     public ResponseEntity<Response> updateUser(@RequestHeader String email, String token,
