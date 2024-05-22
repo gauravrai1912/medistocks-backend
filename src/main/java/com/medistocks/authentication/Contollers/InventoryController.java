@@ -21,15 +21,16 @@ public class InventoryController {
     @Autowired
     private InventoryNotificationService inventoryNotificationService;
 
-    @GetMapping
+    @GetMapping("/getall")
     public ResponseEntity<List<InventoryModel>> getAllInventory() {
         List<InventoryModel> inventory = inventoryService.getAllInventory();
         return new ResponseEntity<>(inventory, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<InventoryModel> getInventoryById(@PathVariable int id) {
-        InventoryModel inventory = inventoryService.getInventoryById(id);
+    @GetMapping
+    public ResponseEntity<InventoryModel> getInventoryById(@RequestParam String productName, @RequestParam String batchNo) {
+        InventoryModel inventory = inventoryService.getInventoryById(productName, batchNo);
+        
         return new ResponseEntity<>(inventory, HttpStatus.OK);
     }
 
@@ -39,15 +40,15 @@ public class InventoryController {
         return new ResponseEntity<>(newInventory, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<InventoryModel> updateInventory(@PathVariable int id, @RequestBody InventoryModel inventory) {
-        InventoryModel updatedInventory = inventoryService.updateInventory(id, inventory);
+    @PutMapping
+    public ResponseEntity<InventoryModel> updateInventory(@RequestParam String productName, @RequestParam String batchNo, @RequestBody InventoryModel inventory) {
+        InventoryModel updatedInventory = inventoryService.updateInventory(productName,batchNo, inventory);
         return new ResponseEntity<>(updatedInventory, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteInventory(@PathVariable int id) {
-        inventoryService.deleteInventory(id);
+    @DeleteMapping
+    public String deleteInventory(@RequestParam String productName , @RequestParam String batchNo) {
+        inventoryService.deleteInventory(productName,batchNo);
         return "Product deleted from inventory";
     }
 
