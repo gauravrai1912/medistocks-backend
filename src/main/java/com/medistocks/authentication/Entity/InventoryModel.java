@@ -9,7 +9,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
+
 
 @Data
 @Entity
@@ -19,7 +19,7 @@ public class InventoryModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int inventoryId;
-    private String productName;
+    private String productName; 
     private String supplierName;
     private String batchNumber;
     private LocalDate purchaseDate;

@@ -7,6 +7,7 @@ import com.medistocks.authentication.Entity.InventoryModel;
 
 import com.medistocks.authentication.Repository.InventoryRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -51,4 +52,18 @@ public class InventoryService {
     public void deleteInventory(String productName, String batchNo) {
         inventoryRepository.deleteByProductNameAndBatchNumber(productName, batchNo);
     }
+
+     public long getCountOfUniqueProductNames() {
+        return inventoryRepository.countUniqueProductNames();
+    }
+
+    public long getCountOfProductsBelowQuantity() {
+        return inventoryRepository.countProductsBelowQuantity();
+    }
+
+    public long getCountOfProductsExpiringWithinAWeek() {
+        LocalDate oneWeekFromNow = LocalDate.now().plusWeeks(1);
+        return inventoryRepository.countProductsExpiringWithinAWeek(oneWeekFromNow);
+    }
+
 }

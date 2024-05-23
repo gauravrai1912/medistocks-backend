@@ -9,7 +9,9 @@ import com.medistocks.authentication.Entity.InventoryModel;
 import com.medistocks.authentication.Service.Impl.InventoryNotificationService;
 import com.medistocks.authentication.Service.Impl.InventoryService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/inventory")
@@ -50,6 +52,16 @@ public class InventoryController {
     public String deleteInventory(@RequestParam String productName , @RequestParam String batchNo) {
         inventoryService.deleteInventory(productName,batchNo);
         return "Product deleted from inventory";
+    }
+
+
+    @GetMapping("/summary")
+    public Map<String, Long> getInventorySummary() {
+        Map<String, Long> summary = new HashMap<>();
+        summary.put("totalUniqueProducts", inventoryService.getCountOfUniqueProductNames());
+        summary.put("productsBelowQuantity", inventoryService.getCountOfProductsBelowQuantity());
+        summary.put("productsExpiringWithinAWeek", inventoryService.getCountOfProductsExpiringWithinAWeek());
+        return summary;
     }
 
     

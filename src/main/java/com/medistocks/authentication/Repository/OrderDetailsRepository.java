@@ -15,6 +15,8 @@ public interface OrderDetailsRepository extends CrudRepository<OrderDetailsModel
 
     void deleteByOrderId(int id);
 
+    OrderDetailsModel findByOrderIdAndProductName(int orderId, String productName);
+
 
     
 }

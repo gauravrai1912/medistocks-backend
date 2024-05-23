@@ -18,7 +18,7 @@ public class OrderDetailsModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderDetailId;
     private int orderId;
-    private int productId;
+    private String productName;
     private int quantityOrdered;
     private BigDecimal totalPrice;
   

@@ -63,8 +63,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/orders/{id}").permitAll()  
                         .requestMatchers(HttpMethod.GET, "/order-details").permitAll()
                         .requestMatchers(HttpMethod.GET, "/order-details/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/order-details/getDetails").permitAll()
                         .requestMatchers(HttpMethod.POST, "/order-details").permitAll() 
-                        .requestMatchers(HttpMethod.PUT, "/order-details/{id}").permitAll() 
+                        .requestMatchers(HttpMethod.PUT, "/order-details").permitAll() 
                         .requestMatchers(HttpMethod.DELETE, "/order-details/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/validateOtp").permitAll()
                         .anyRequest().authenticated());
