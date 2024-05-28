@@ -32,8 +32,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/changePassword").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/getallusers").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/v1/auth/updateUser").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/getUser/**" ).permitAll()
-
+                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/getUser/*" ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/getuserinfo").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/auth/updateProfile").permitAll()
+                        
                         .requestMatchers(HttpMethod.POST, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products").permitAll() 
                         .requestMatchers(HttpMethod.GET, "/products/{id}").permitAll() 
@@ -51,8 +53,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/inventory").permitAll() 
                         .requestMatchers(HttpMethod.GET, "/inventory/check").permitAll() 
                         .requestMatchers(HttpMethod.GET, "/inventory/check2").permitAll() 
-                        .requestMatchers(HttpMethod.PUT, "/inventory/{id}").permitAll() 
-                        .requestMatchers(HttpMethod.DELETE, "/inventory/{id}").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/inventory").permitAll() 
+                        .requestMatchers(HttpMethod.DELETE, "/inventory").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/orders").permitAll()
                         .requestMatchers(HttpMethod.GET, "/orders/{id}").permitAll()
@@ -61,8 +63,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/orders/{id}").permitAll()  
                         .requestMatchers(HttpMethod.GET, "/order-details").permitAll()
                         .requestMatchers(HttpMethod.GET, "/order-details/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/order-details/getDetails").permitAll()
                         .requestMatchers(HttpMethod.POST, "/order-details").permitAll() 
-                        .requestMatchers(HttpMethod.PUT, "/order-details/{id}").permitAll() 
+                        .requestMatchers(HttpMethod.PUT, "/order-details").permitAll() 
                         .requestMatchers(HttpMethod.DELETE, "/order-details/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/validateOtp").permitAll()
                         .anyRequest().authenticated());

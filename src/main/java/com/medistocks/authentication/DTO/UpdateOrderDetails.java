@@ -1,20 +1,19 @@
 package com.medistocks.authentication.DTO;
 
-
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
-public class UpdateUser {
-
-    private long phoneNumber;
-    private String firstName;
-    private String lastName;
-    
+public class UpdateOrderDetails {
+    private int orderId;
+    private String productName;
+    private int quantityOrdered;
+    private BigDecimal totalPrice;
 }

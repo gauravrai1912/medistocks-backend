@@ -43,9 +43,9 @@ public class OrderService {
         OrderModel existingOrder = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
         
         existingOrder.setOrderDate(order.getOrderDate());
-        existingOrder.setTotalAmount(order.getTotalAmount());
+        
         existingOrder.setPharmacistId(order.getPharmacistId());
-        existingOrder.setSupplierId(order.getSupplierId());
+        existingOrder.setSupplierName(order.getSupplierName());
 
         return orderRepository.save(existingOrder);
     }

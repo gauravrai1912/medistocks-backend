@@ -7,6 +7,7 @@ import com.medistocks.authentication.Entity.InventoryModel;
 
 import com.medistocks.authentication.Repository.InventoryRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -19,8 +20,9 @@ public class InventoryService {
         return inventoryRepository.findAll();
     }
 
-    public InventoryModel getInventoryById(int inventoryId) {
-        return inventoryRepository.findById(inventoryId).orElse(null);
+    public InventoryModel getInventoryById(String productName, String batchNo) {
+        return inventoryRepository.findByProductNameAndBatchNumber(productName, batchNo).orElse(null);
+        
     }
     public InventoryModel saveInventory(InventoryModel inventory) {
         return inventoryRepository.save(inventory);
@@ -30,11 +32,11 @@ public class InventoryService {
         return inventoryRepository.save(inventory);
     }
 
-    public InventoryModel updateInventory(int inventoryId, InventoryModel updatedInventory) {
-        InventoryModel existingInventory = inventoryRepository.findById(inventoryId).orElse(null);
+    public InventoryModel updateInventory(String productName, String batchNo, InventoryModel updatedInventory) {
+        InventoryModel existingInventory = inventoryRepository.findByProductNameAndBatchNumber(productName, batchNo).orElse(null);
         if (existingInventory != null) {
             existingInventory.setProductName(updatedInventory.getProductName());
-            existingInventory.setSupplierId(updatedInventory.getSupplierId());
+            existingInventory.setSupplierName(updatedInventory.getSupplierName());
             existingInventory.setBatchNumber(updatedInventory.getBatchNumber());
             existingInventory.setPurchaseDate(updatedInventory.getPurchaseDate());
             existingInventory.setManufacturedDate(updatedInventory.getManufacturedDate());
@@ -45,8 +47,23 @@ public class InventoryService {
         }
         return null;
     }
+    
 
-    public void deleteInventory(int inventoryId) {
-        inventoryRepository.deleteById(inventoryId);
+    public void deleteInventory(String productName, String batchNo) {
+        inventoryRepository.deleteByProductNameAndBatchNumber(productName, batchNo);
     }
+
+     public long getCountOfUniqueProductNames() {
+        return inventoryRepository.countUniqueProductNames();
+    }
+
+    public long getCountOfProductsBelowQuantity() {
+        return inventoryRepository.countProductsBelowQuantity();
+    }
+
+    public long getCountOfProductsExpiringWithinAWeek() {
+        LocalDate oneWeekFromNow = LocalDate.now().plusWeeks(1);
+        return inventoryRepository.countProductsExpiringWithinAWeek(oneWeekFromNow);
+    }
+
 }

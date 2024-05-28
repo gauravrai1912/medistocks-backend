@@ -92,7 +92,6 @@ public class UserServiceImpl implements UserService {
 
             user.setFirstName(updateUser.getFirstName());
             user.setLastName(updateUser.getLastName());
-            user.setPharmacyName(updateUser.getPharmacyName());
             user.setPhoneNumber(updateUser.getPhoneNumber());
 
             // Save the updated user
@@ -277,4 +276,32 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public UpdateUser getUserInfo(String email, String token) {
+        // Fetch the existing user from the repository
+        User existingUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Map the relevant fields to the UpdateUser object
+        UpdateUser updateUser = new UpdateUser();
+        updateUser.setPhoneNumber(existingUser.getPhoneNumber());
+        updateUser.setFirstName(existingUser.getFirstName());
+        updateUser.setLastName(existingUser.getLastName());
+
+        return updateUser;
+    }
+
+    public void updateUserProfile(String email, UpdateUser updateUserRequest) {
+        // Retrieve the user entity from the database based on the email
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));;
+        
+        // Update the user entity with the new data
+        if (user != null) {
+            user.setPhoneNumber(updateUserRequest.getPhoneNumber());
+            user.setFirstName(updateUserRequest.getFirstName());
+            user.setLastName(updateUserRequest.getLastName());
+            
+            // Save the updated user entity back to the database
+            userRepository.save(user);
+        } 
+    }
 }
