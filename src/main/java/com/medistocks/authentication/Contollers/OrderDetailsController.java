@@ -10,7 +10,7 @@ import com.medistocks.authentication.Service.Impl.OrderDetailsService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order-details")
+@RequestMapping("order-details")
 public class OrderDetailsController {
 
     @Autowired
@@ -33,9 +33,16 @@ public class OrderDetailsController {
     // }
    
 
+    @PostMapping
+    public OrderDetailsModel saveOrderDetails(@RequestBody OrderDetailsModel orderDetails) {
+        System.out.println(orderDetails);
+        return orderDetailsService.saveOrderDetails(orderDetails);
+    }
+
     @PutMapping
-    public OrderDetailsModel saveOrderDetails(@RequestBody UpdateOrderDetails orderDetails) {
-        return orderDetailsService.updatOrderDetails(orderDetails);
+    public OrderDetailsModel updateOrderDetails(@RequestBody OrderDetailsModel orderDetails) {
+        System.out.println(orderDetails);
+        return orderDetailsService.updateOrderDetails(orderDetails);
     }
 
     @GetMapping("/order/{orderId}")

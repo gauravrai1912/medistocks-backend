@@ -24,7 +24,7 @@ public class OrderDetailsService {
         return orderDetailsRepository.save(orderDetails);
     }
 
-    public OrderDetailsModel updatOrderDetails(UpdateOrderDetails orderDetails) {
+    public OrderDetailsModel updateOrderDetails(OrderDetailsModel orderDetails) {
         OrderDetailsModel orderDetailsModel = orderDetailsRepository.findByOrderIdAndProductName(orderDetails.getOrderId(), orderDetails.getProductName());
         orderDetailsModel.setQuantityOrdered(orderDetails.getQuantityOrdered());
         orderDetailsModel.setTotalPrice(orderDetails.getTotalPrice());
