@@ -47,4 +47,8 @@ public class ProductService {
         
         return productRepository.save(existingProduct);
     }
+
+    public boolean isProductPresent(String name) {
+        return productRepository.existsByProductName(name);
+    }
 }

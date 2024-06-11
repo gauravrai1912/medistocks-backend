@@ -12,4 +12,6 @@ public interface ProductRepository extends JpaRepository<ProductModel,Integer>{
 
     void deleteByProductName(String name);
 
+    boolean existsByProductName(String name);
+
 }

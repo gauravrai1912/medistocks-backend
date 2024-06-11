@@ -14,5 +14,7 @@ public interface SupplierRepository extends JpaRepository<SupplierModel,Integer>
 
     void deleteBySupplierName(String name);
 
+    boolean existsBySupplierName(String name);
+
     
 } 

@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RestController
 @RequestMapping("api/v1/auth")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://52.66.201.221:3000")
 
 public class UserController {
 

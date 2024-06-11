@@ -49,4 +49,10 @@ public class ProductController {
         productService.deleteProduct(name);
         return "Product Deleted" ;
     }
+
+    @GetMapping("/checkproduct")
+    public ResponseEntity<Boolean> checkProduct(@RequestParam String name) {
+        boolean isPresent = productService.isProductPresent(name);
+        return new ResponseEntity<>(isPresent, HttpStatus.OK);
+    }
 }

@@ -48,4 +48,10 @@ public class SupplierController {
         supplierService.deleteSupplier(name);
         return "Supplier details Deleted";
     }
+
+    @GetMapping("/checksupplier")
+    public ResponseEntity<Boolean> checkSupplier(@RequestParam String name) {
+        boolean isPresent = supplierService.isSupplierPresent(name);
+        return ResponseEntity.ok(isPresent);
+    }
 }

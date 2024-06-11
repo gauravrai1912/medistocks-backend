@@ -46,4 +46,8 @@ public class SupplierService {
         
         return supplierRepository.save(existingSupplier);
     }
+
+    public boolean isSupplierPresent(String name) {
+        return supplierRepository.existsBySupplierName(name);
+    }
 }
